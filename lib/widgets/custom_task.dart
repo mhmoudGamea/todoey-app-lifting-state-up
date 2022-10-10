@@ -6,7 +6,6 @@ import '../constants.dart';
 import '../models/task.dart';
 
 class CustomTask extends StatelessWidget {
-
   final Task task;
   final VoidCallback longPressCallBack;
 
@@ -14,7 +13,6 @@ class CustomTask extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final taskData = Provider.of<TaskProvider>(context, listen: false);
 
     return ListTile(
       onLongPress: longPressCallBack,
@@ -23,15 +21,15 @@ class CustomTask extends StatelessWidget {
         style: TextStyle(
           fontFamily: fontName,
           color: Colors.black54,
-          decoration: taskData.getStatus ? TextDecoration.lineThrough : null,
+          decoration: task.isDone ? TextDecoration.lineThrough : null,
           decorationColor: Colors.red,
         ),
       ),
       trailing: Checkbox(
         activeColor: Colors.lightBlueAccent,
-        value: taskData.getStatus,
-        onChanged: (_) {
-          taskData.toggleTaskStatus();
+        value: task.isDone,
+        onChanged: (val) {
+          Provider.of<TaskProvider>(context, listen:  false).updateTaskStatus(task);
         },
       ),
     );

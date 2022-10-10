@@ -21,8 +21,8 @@ class TaskProvider with ChangeNotifier {
     notifyListeners();
   }
 
-  void toggleTaskStatus() {
-    _isDone = !_isDone;
+  void updateTaskStatus(Task task) {
+    task.toggleStatus();
     notifyListeners();
   }
 
