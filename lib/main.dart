@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '/screens/tasks_screen.dart';
+import './providers/task_provider.dart';
 void main() {
   runApp(const MyApp());
 }
@@ -10,9 +12,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: TasksScreen(),
+    return ChangeNotifierProvider<TaskProvider>(
+      create: (context) => TaskProvider(),
+      child: const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: TasksScreen(),
+      ),
     );
   }
 }

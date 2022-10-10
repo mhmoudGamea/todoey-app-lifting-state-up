@@ -1,24 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:todoey_app/constants.dart';
+import 'package:provider/provider.dart';
 
-class AddTaskScreen extends StatefulWidget {
+import '../constants.dart';
+import '../providers/task_provider.dart';
 
-  final Function(String?) addNewTaskFunction;
-  AddTaskScreen({Key? key, required this.addNewTaskFunction}) : super(key: key);
+class AddTaskScreen extends StatelessWidget {
+  AddTaskScreen({super.key});
 
-  @override
-  State<AddTaskScreen> createState() => _AddTaskScreenState();
-}
+  // i make it static because when i fill my textField and press return mutton in my phone to hide
+  // my keyboard it remove the text that i just typed in my textField
+  // why it remove it ? because when you hide the keyboard it rebuild the build method and because
+  // of that it erase what i typed in textField
+  static final _controller = TextEditingController();
 
-class _AddTaskScreenState extends State<AddTaskScreen> {
-  // final _form = GlobalKey<FormState>();
-
-  late TextEditingController _controller;
-  @override
-  void initState() {
-    _controller = TextEditingController();
-    super.initState();
-  }
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -60,8 +54,9 @@ class _AddTaskScreenState extends State<AddTaskScreen> {
             ),
             ElevatedButton(
               onPressed: () {
-                widget.addNewTaskFunction(_controller.text);
-                Navigator.of(context).pop();
+                Provider.of<TaskProvider>(context, listen: false).addTask(_controller.text);
+                Navigator.pop(context);
+                _controller.clear();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.lightBlueAccent,

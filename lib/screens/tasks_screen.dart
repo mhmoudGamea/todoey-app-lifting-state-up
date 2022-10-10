@@ -1,24 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 
-import '../models/task.dart';
 import '../widgets/custom_app_name.dart';
-import '../widgets/custom_task.dart';
+import '../widgets/custom_list_view.dart';
 import './add_task_screen.dart';
 
-class TasksScreen extends StatefulWidget {
-  const TasksScreen({Key? key}) : super(key: key);
-
-  @override
-  State<TasksScreen> createState() => _TasksScreenState();
-}
-
-class _TasksScreenState extends State<TasksScreen> {
-  List<Task> items = [
-    Task(name: 'Go Gym'),
-    Task(name: 'Bye bread'),
-    Task(name: 'Bye tomatoes'),
-  ];
+class TasksScreen extends StatelessWidget {
+  const TasksScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +15,7 @@ class _TasksScreenState extends State<TasksScreen> {
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CustomAppName(numberOfTasks: items.length),
+          const CustomAppName(),
           Expanded(
             // the bottom white container
             child: Container(
@@ -39,8 +27,9 @@ class _TasksScreenState extends State<TasksScreen> {
                     BorderRadius.only(topLeft: Radius.circular(20), topRight: Radius.circular(20)),
               ),
               child: Column(
-                children: [
-                  CustomListView(items: items)
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: const [
+                  CustomListView()
                 ],
               ),
             ),
@@ -50,47 +39,11 @@ class _TasksScreenState extends State<TasksScreen> {
       floatingActionButton: FloatingActionButton(
         backgroundColor: Colors.lightBlueAccent,
         onPressed: () {
-          showModalBottomSheet(context:(context) , builder: (context) =>  AddTaskScreen(addNewTaskFunction: (value) {
-            setState(() {
-              items.add(Task(name: value!));
-            });
-          }));
+          showModalBottomSheet(context:(context) , builder: (context) =>  AddTaskScreen());
         },
         child: const Icon(IconlyBold.plus),
       ),
     );
   }
 }
-
-
-class CustomListView extends StatefulWidget {
-
-  final List<Task> items;
-
-  const CustomListView({
-    Key? key,
-    required this.items,
-  }) : super(key: key);
-
-  @override
-  State<CustomListView> createState() => _CustomListViewState();
-}
-
-class _CustomListViewState extends State<CustomListView> {
-
-  @override
-  Widget build(BuildContext context) {
-    return Expanded(
-      child: ListView.builder(
-        itemCount: widget.items.length,
-        itemBuilder: (context, index) => CustomTask(task: widget.items[index], onChangeStatus: (value) {
-          setState(() {
-            widget.items[index].isDone = value!;
-          });
-        }),
-      ),
-    );
-  }
-}
-
 

@@ -1,28 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/task_provider.dart';
 import '../constants.dart';
 import '../models/task.dart';
 
 class CustomTask extends StatelessWidget {
-  final Function(bool?) onChangeStatus;
-  final Task task;
 
-  CustomTask({super.key, required this.task, required this.onChangeStatus});
+  final Task task;
+  final VoidCallback longPressCallBack;
+
+  const CustomTask({super.key, required this.task, required this.longPressCallBack});
 
   @override
   Widget build(BuildContext context) {
+    final taskData = Provider.of<TaskProvider>(context, listen: false);
+
     return ListTile(
+      onLongPress: longPressCallBack,
       title: Text(
         task.name,
         style: TextStyle(
-            fontFamily: fontName,
-            color: Colors.black54,
-            decoration: task.isDone ? TextDecoration.lineThrough : null),
+          fontFamily: fontName,
+          color: Colors.black54,
+          decoration: taskData.getStatus ? TextDecoration.lineThrough : null,
+          decorationColor: Colors.red,
+        ),
       ),
       trailing: Checkbox(
         activeColor: Colors.lightBlueAccent,
-        value: task.isDone,
-        onChanged: onChangeStatus,
+        value: taskData.getStatus,
+        onChanged: (_) {
+          taskData.toggleTaskStatus();
+        },
       ),
     );
   }

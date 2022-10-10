@@ -1,17 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:provider/provider.dart';
+import 'package:todoey_app/models/task.dart';
 
+import '../providers/task_provider.dart';
 import '../constants.dart';
 
 class CustomAppName extends StatelessWidget {
-  final int numberOfTasks;
   const CustomAppName({
     Key? key,
-    required this.numberOfTasks,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+
     return Container(
       padding: const EdgeInsets.only(top: 80, left: 30, right: 30, bottom: 30),
       child: Column(
@@ -33,9 +35,11 @@ class CustomAppName extends StatelessWidget {
                 fontWeight: FontWeight.bold,
                 fontFamily: fontName),
           ),
-          Text(
-            numberOfTasks == 1 ? '$numberOfTasks Task' : '$numberOfTasks Tasks',
-            style: const TextStyle(fontSize: 17, color: Colors.white, fontFamily: fontName),
+          Consumer<TaskProvider>(
+            builder: (context, taskData, child) => Text(
+              taskData.getItems.length == 1 ? '${taskData.getItems.length} Task' : '${taskData.getItems.length} Tasks',
+              style: const TextStyle(fontSize: 17, color: Colors.white, fontFamily: fontName),
+            ),
           ),
         ],
       ),
